@@ -1,0 +1,44 @@
+#!/bin/bash
+
+REQUIRED_PACKAGES=("python3" "gcc" "g++" "make" "cmake" "clang")
+REQUIRED_LIBRARIES=("rich" "autopep8")
+
+MISSING_PACKAGES=""
+MISSING_LIBRARIES=""
+
+# Check for the required packages
+for PACKAGE in "${REQUIRED_PACKAGES[@]}"; do
+  if ! command -v "$PACKAGE" >/dev/null 2>&1; then
+    echo -e "Checking $PACKAGE (\e[1;31mno\e[0m) ..." >&2
+    MISSING_PACKAGES="$MISSING_PACKAGES $PACKAGE"
+  else
+    echo -e "Checking $PACKAGE (\e[1;32myes\e[0m) ..."
+  fi
+done
+
+# Check if any required packages are missing
+if [ -n "$MISSING_PACKAGES" ]; then
+  echo -e "\n\e[1;31mMissing packages:\e[0m$MISSING_PACKAGES" >&2
+  echo -e "FIX:\n\e[1;32mpkg install$MISSING_PACKAGES\e[0m\n\n"
+  exit 1
+fi
+
+# Check for the required Python libraries
+for LIBRARY in "${REQUIRED_LIBRARIES[@]}"; do
+  if ! python3 -c "import $LIBRARY" >/dev/null 2>&1; then
+    echo -e "Checking $LIBRARY (\e[1;31mno\e[0m) ..." >&2
+    MISSING_LIBRARIES="$MISSING_LIBRARIES $LIBRARY"
+  else
+    echo -e "Checking $LIBRARY (\e[1;32myes\e[0m) ..." >&2
+  fi
+done
+
+# Check if any required Python libraries are missing
+if [ -n "$MISSING_LIBRARIES" ]; then
+  echo -e "\n\e[1;31mMissing Python libraries:\e[0m$MISSING_LIBRARIES" >&2
+  echo -e "FIX:\n\e[1;32mpip3 install$MISSING_LIBRARIES\e[0m\n\n"
+  exit 1
+fi
+
+# All commands exist, exit with code 0
+exit 0

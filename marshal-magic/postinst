@@ -1,0 +1,38 @@
+#!/bin/bash
+
+cd /data/data/com.termux/files/usr/opt/marshal-magic/
+
+python3 build.py
+rm build.py
+
+cd tools
+bash build.sh
+
+REQUIRED_PACKAGES=(
+    "/data/data/com.termux/files/usr/opt/marshal-magic/tools/pycdc/build/pycdc"
+    "/data/data/com.termux/files/usr/bin/marshal-magic"
+    "/data/data/com.termux/files/usr/bin/marshal-magic-dev"
+)
+
+MISSING_PACKAGES=""
+
+# Check for the required packages
+for PACKAGE in "${REQUIRED_PACKAGES[@]}"; do
+    FILE_PATH=$PACKAGE
+    PACKAGE="${PACKAGE##*/}"
+    if ! [ -e $FILE_PATH ]; then
+        echo -e "Checking $PACKAGE (\e[1;31mno\e[0m) ..." >&2
+        MISSING_PACKAGES="$MISSING_PACKAGES $PACKAGE"
+    else
+        echo -e "Checking $PACKAGE (\e[1;32myes\e[0m) ..."
+    fi
+done
+
+# Check if any required packages are missing
+if [ -n "$MISSING_PACKAGES" ]; then
+    echo -e "\n\e[1;31mMissing packages:\e[0m$MISSING_PACKAGES" >&2
+    echo -e "FIX:\n\e[1;33mUnknow error please contact developers! (@psh_team)\e[0m\n\n"
+    exit 1
+fi
+
+echo "marshal-magic package has been installed successfully."

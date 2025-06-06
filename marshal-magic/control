@@ -1,0 +1,5 @@
+Package: marshal-magic
+Version: 1.0.0
+Architecture: all
+Maintainer: PSH-TEAM <pshteam.developers@gmail.com>
+Description: Tool that decode any python bytecode version.

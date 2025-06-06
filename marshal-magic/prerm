@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -rf /data/data/com.termux/files/usr/bin/marshal-magic
+rm -rf /data/data/com.termux/files/usr/opt/marshal-magic/tools/pycdc/build
+find /data/data/com.termux/files/usr/opt/marshal-magic -type d -name "__pycache__" | xargs rm -rf
